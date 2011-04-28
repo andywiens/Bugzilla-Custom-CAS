@@ -23,7 +23,7 @@
            'auth_env_realname' => '',
            'bonsai_url' => '',
            'cas_logout_url' => 'https://signin.k-state.edu/WebISO/logout',
-           'cas_url' => 'https://signin.k-state.edu/WebISO/login',
+           'cas_url' => 'https://signin.k-state.edu/WebISO',
            'cas_server_cert' => '/etc/ssl/certs/webiso.crt',
            'chartgroup' => 'editbugs',
            'commentonchange_resolution' => 0,
