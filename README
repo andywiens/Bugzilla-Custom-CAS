@@ -94,4 +94,4 @@ Further support information is at http://www.bugzilla.org/support/
 Update Bugzilla Authentication
 ==============================
 
-The goal is to integrate an existing perl CAS client into Bugzilla. We must ensure that our custom logout funcationality is maintained.
+The goal is to integrate an existing perl CAS client into Bugzilla. We must ensure that our custom logout functionality is maintained.
