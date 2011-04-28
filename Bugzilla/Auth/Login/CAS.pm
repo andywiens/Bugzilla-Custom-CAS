@@ -32,7 +32,11 @@ sub get_login_info {
     my $service_ticket = trim(delete $params->{"ST"});
     
     if ($service_ticket) {
-        #validate service ticket 
+        #validate service ticket
+        my $cas = $self->cas_server();
+        my $user = $cas->validateST(Bugzilla->cgi->url(),$service_ticket);
+        
+        return { username => $user } if $user;
         
         #if invalid throw error or return no data
         #else look for any saved url parameters and push back into parameter hash, then return user
@@ -41,10 +45,25 @@ sub get_login_info {
 }
 
 sub fail_nodata {
+    my ($self) = @_;
+    my $cgi = Bugzilla->cgi;
+    
+    my $cas = $self->cas_server();
+    my $login_url = $cas->getServerLoginURL($cgi->url());
+    
+    print $cgi->redirect($login_url);
+    
     # save the request parameters (at least the post parameters), then redirect to the cas server
     
     # TODO:finish!
 }
+
+sub cas_server {
+    return new AuthCAS(casUrl => Bugzilla->params->{"cas_url"},
+        CAFile => Bugzilla->params->{"cas_server_cert"});
+}
+
+
 
 
 1;
