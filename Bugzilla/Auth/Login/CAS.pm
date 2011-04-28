@@ -21,6 +21,8 @@ use base qw(Bugzilla::Auth::Login);
 use Bugzilla::Constants;
 use Bugzilla::Util;
 
+use AuthCAS;
+
 use constant requires_verification => 0;
 use constant can_login => 0;
 use constant is_automatic => 1;
@@ -29,15 +31,18 @@ sub get_login_info {
     my ($self) = @_;
     my $params = Bugzilla->input_params;
     
-    my $service_ticket = trim(delete $params->{"ST"});
+    my $service_ticket = trim(delete $params->{"ticket"});
     
     if ($service_ticket) {
         #validate service ticket
+	print Bugzilla->cgi->header();
+	print "<html><head></head><body>";
         my $cas = $self->cas_server();
         my $user = $cas->validateST(Bugzilla->cgi->url(),$service_ticket);
         
         return { username => $user } if $user;
-        
+	print "</body></html>";
+	#print Bugzilla->cgi->redirect('http://www.google.com?ticket=' . $service_ticket . '&user=' . $user);
         #if invalid throw error or return no data
         #else look for any saved url parameters and push back into parameter hash, then return user
     }
