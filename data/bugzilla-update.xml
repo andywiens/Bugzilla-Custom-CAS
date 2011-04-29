@@ -12,8 +12,8 @@
     <branch id="2.22" status="closed" vid="2.22.7" url="http://www.bugzilla.org/releases/2.22.7/" date="2009-02-02" />
     <branch id="3.0" status="closed" vid="3.0.11" url="http://www.bugzilla.org/releases/3.0.11/" date="2010-01-31" />
     <branch id="3.2" status="closed" vid="3.2.10" url="http://www.bugzilla.org/releases/3.2.10/" date="2011-01-24" />
-    <branch id="3.4" status="old-stable" vid="3.4.10" url="http://www.bugzilla.org/releases/3.4.10/" date="2011-01-24" />
-    <branch id="3.6" status="old-stable" vid="3.6.4" url="http://www.bugzilla.org/releases/3.6.4/" date="2011-01-24" />
-    <branch id="4.0" status="stable" vid="4.0" url="http://www.bugzilla.org/releases/4.0/" date="2011-02-15" />
-    <branch id="4.2" status="development" vid="4.1.1" url="http://www.bugzilla.org/releases/4.2/" date="2011-03-13" />
+    <branch id="3.4" status="old-stable" vid="3.4.11" url="http://www.bugzilla.org/releases/3.4.11/" date="2011-04-27" />
+    <branch id="3.6" status="old-stable" vid="3.6.5" url="http://www.bugzilla.org/releases/3.6.5/" date="2011-04-27" />
+    <branch id="4.0" status="stable" vid="4.0.1" url="http://www.bugzilla.org/releases/4.0.1/" date="2011-04-27" />
+    <branch id="4.2" status="development" vid="4.1.2" url="http://www.bugzilla.org/releases/4.2/" date="2011-04-27" />
 </bugzilla>

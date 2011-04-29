@@ -46,6 +46,15 @@ my $vars = {};
 # else accidentally relies on the current login.
 if ($cgi->param('logout')) {
     Bugzilla->logout();
+    
+    # if the CAS login is in the chain, call it's logout method knowing it'll cause 
+    # a redirect
+    my @login_methods = split(/,/, Bugzilla->params->{'user_info_class'} );
+    my $matches = grep(/\s*CAS\s*/, @login_methods);
+    if ($matches > 0){
+        Bugzilla::Auth::Login::CAS->logout();
+    }
+    
     $user = Bugzilla->user;
     $vars->{'message'} = "logged_out";
     # Make sure that templates or other code doesn't get confused about this.

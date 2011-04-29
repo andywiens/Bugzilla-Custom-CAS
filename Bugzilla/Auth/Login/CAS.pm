@@ -35,16 +35,15 @@ sub get_login_info {
     
     if ($service_ticket) {
         #validate service ticket
-	print Bugzilla->cgi->header();
-	print "<html><head></head><body>";
         my $cas = $self->cas_server();
         my $user = $cas->validateST(Bugzilla->cgi->url(),$service_ticket);
-        
-        return { username => $user } if $user;
-	print "</body></html>";
-	#print Bugzilla->cgi->redirect('http://www.google.com?ticket=' . $service_ticket . '&user=' . $user);
-        #if invalid throw error or return no data
-        #else look for any saved url parameters and push back into parameter hash, then return user
+        if (AuthCAS::get_errors()) {
+            # errors kept the service ticket from validating. it could be that the ticket expired as well, 
+            # so just returning no data ... could prove to be a bad decision ... maybe throwing an error is better
+            return { failure => AUTH_NODATA };
+        }
+        # should look for any saved url parameters and push back into parameter hash, then return user
+        return { username => $user . Bugzilla->params->{"cas_user_domain"} || '' } if $user;
     }
     return { failure => AUTH_NODATA };
 }
@@ -56,17 +55,43 @@ sub fail_nodata {
     my $cas = $self->cas_server();
     my $login_url = $cas->getServerLoginURL($cgi->url());
     
-    print $cgi->redirect($login_url);
+    my $service_name = Bugzilla->params->{"cas_service_name"} || 'Bugzilla';
+    my $logout_callback = $self->logout_redirect_url();
     
-    # save the request parameters (at least the post parameters), then redirect to the cas server
+    my $redirection_url = $login_url . '&serviceName=' . $service_name . '&logoutCallback=' . $logout_callback;
     
-    # TODO:finish!
+    # should save the request parameters (at least the post parameters), then redirect to the cas server
+
+    print $cgi->redirect($redirection_url);
 }
 
 sub cas_server {
     return new AuthCAS(casUrl => Bugzilla->params->{"cas_url"},
-        CAFile => Bugzilla->params->{"cas_server_cert"});
+        CAPath => Bugzilla->params->{"cas_cert_path"});
 }
+
+sub logout {
+    my $cas_logout_url = Bugzilla->params->{"cas_logout_url"};
+    
+    if ( $cas_logout_url ) {
+        print( Bugzilla->cgi->redirect($cas_logout_url) );
+    }
+}
+
+sub logout_redirect_url {
+    my $cgi = Bugzilla->cgi;
+    
+    my $p = $cgi->url(-path => 1);
+    my $r = $cgi->url(-relative => 1);
+    
+    if ($r) {
+        return substr($p,0,rindex($p, $r)) . 'ksulogout.cgi';
+    }
+     
+    return $p . 'ksulogout.cgi';
+}
+
+
 
 
 
