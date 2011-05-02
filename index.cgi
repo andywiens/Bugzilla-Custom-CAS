@@ -51,7 +51,7 @@ if ($cgi->param('logout')) {
     # a redirect
     my @login_methods = split(/,/, Bugzilla->params->{'user_info_class'} );
     my $matches = grep(/\s*CAS\s*/, @login_methods);
-    if ($matches > 0){
+    if ($matches > 0 && $cgi->param('logout') != 2){
         Bugzilla::Auth::Login::CAS->logout();
     }
     

@@ -26,6 +26,7 @@
            'cas_url' => 'https://signin.k-state.edu/WebISO',
            'cas_cert_path' => '/etc/ssl/certs/',
            'cas_user_domain' => '@ksu.edu',
+	   'cas_logout_callback' => 'index.cgi?logout=2',
            'chartgroup' => 'editbugs',
            'commentonchange_resolution' => 0,
            'commentonduplicate' => 0,

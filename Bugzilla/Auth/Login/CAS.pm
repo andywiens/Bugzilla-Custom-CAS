@@ -81,14 +81,14 @@ sub logout {
 sub logout_redirect_url {
     my $cgi = Bugzilla->cgi;
     
-    my $p = $cgi->url(-path => 1);
-    my $r = $cgi->url(-relative => 1);
-    
-    if ($r) {
-        return substr($p,0,rindex($p, $r)) . 'ksulogout.cgi';
+    my $base_url = Bugzilla::Util->correct_urlbase();
+    my $page = Bugzilla->params->{"cas_logout_callback"}; 
+
+    if ('/' != substr($base_url,-1)){
+	$base_url = $base_url . '/';
     }
-     
-    return $p . 'ksulogout.cgi';
+
+    return $base_url . $page;
 }
 
 
